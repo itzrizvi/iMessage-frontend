@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 
 const Home: NextPage = () =>{
   return (
-    <div>Hello Home Page</div>
+    <div>Hello iMessage</div>
   )
 }
 export default Home;
