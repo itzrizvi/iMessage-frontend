@@ -6,11 +6,12 @@ import { getSession, useSession } from "next-auth/react";
 import { Session } from "next-auth";
 
 const Home: NextPage = () => {
-  const { data } = useSession();
-  console.log("HERE IS DATA", data);
+  const { data: session } = useSession();
+  console.log("HERE IS SESSION DATA", session);
+  const reloadSession = () => {}
   return (
     <Box>
-      {data?.user.username ? <Chat /> : <Auth />}
+      {session?.user.username ? <Chat /> : <Auth session={session} reloadSession={reloadSession} />}
     </Box>
   )
 }
