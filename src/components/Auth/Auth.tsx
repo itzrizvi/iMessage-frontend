@@ -7,12 +7,12 @@ import UserOperations from "../../graphql/operations/user";
 import { CreateUsernameData, CreateUsernameVariables } from "@/utils/types";
 import { toast } from "react-hot-toast";
 
-interface IAuthProps {
+interface AuthProps {
     session: Session | null;
     reloadSession: () => void;
 }
 
-const Auth: React.FC<IAuthProps> = ({
+const Auth: React.FC<AuthProps> = ({
     session,
     reloadSession
 }) => {
@@ -51,7 +51,7 @@ const Auth: React.FC<IAuthProps> = ({
                     <>
                         <Text fontSize='3xl'>Create a Username</Text>
                         <Input placeholder="Entera a username" value={username} onChange={(e)=> setUsername(e.target.value)} />
-                        <Button width="100%" onClick={onSubmit}>Save</Button>
+                        <Button width="100%" onClick={onSubmit} isLoading={loading}>Save</Button>
                     </>
                 ):(
                     <>
