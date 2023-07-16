@@ -41,8 +41,13 @@ const ConversationModal: React.FC<ConversationModalProps> = ({isOpen, onClose, s
     }
 
     const addParticipant = (user: SearchedUser) => {
-        setParticipants((prev) => [...prev, user]);
-        setUsername("");
+        const isDuplicateUser = participants.some((participant) => participant.id === user.id);
+        if (isDuplicateUser) {
+            toast.error("This user already exists in your selection!");
+        }else {
+            setParticipants((prev) => [...prev, user]);
+            setUsername("");
+        }
     }
 
     const removeParticipant = (userID: string) => {
@@ -67,7 +72,6 @@ const ConversationModal: React.FC<ConversationModalProps> = ({isOpen, onClose, s
             
         }
     }
-
 
     return (
         <>
