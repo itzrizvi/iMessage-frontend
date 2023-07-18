@@ -3,7 +3,7 @@ import { Session } from 'next-auth';
 import ConversationList from './ConversationList';
 import { useQuery } from '@apollo/client';
 import ConversationOperations from '../../../graphql/operations/conversation';
-import { CreateConversationData } from '@/utils/types';
+import { ConverationData } from '@/utils/types';
 
 interface ConversationsWrapperProps {
     session: Session;
@@ -16,7 +16,7 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
         data: conversationsData,
         error: conversationsError,
         loading: conversationsLoading,
-    } = useQuery<CreateConversationData, any>(
+    } = useQuery<ConverationData, any>(
         ConversationOperations.Queries.conversations,
     );
     console.log('CONVRSTN DATA', conversationsData);
@@ -27,7 +27,11 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
             py={6}
             px={3}
         >
-            <ConversationList session={session} />
+            <ConversationList
+                session={session}
+                conversations={conversationsData?.conversations || []}
+                conversationsLoading={conversationsLoading}
+            />
         </Box>
     );
 };

@@ -1,44 +1,44 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 const ConveratonFields = `
-    conversations {
-        id
-        participants {
-            user {
-                id
-                username
-            }
-            hasSeenLatestMessage
-        }
-        latestMessage {
+    id
+    participants {
+        user {
             id
-            sender {
-                id
-                username
-            }
-            body
-            createdAt
+            username
         }
-        updatedAt
+        hasSeenLatestMessage
     }
+    latestMessage {
+        id
+        sender {
+            id
+            username
+        }
+        body
+        createdAt
+    }
+    updatedAt
 `;
 
 export default {
-  Queries: {
-    conversations: gql`
+    Queries: {
+        conversations: gql`
             query Conversations {
-                ${ConveratonFields}
+                conversations {
+                    ${ConveratonFields}
+                }
             }
         `,
-  },
-  Mutations: {
-    createConversation: gql`
-      mutation CreateConversation($participantIDs: [String]!) {
-        createConversation(participantIDs: $participantIDs) {
-          conversationID
-        }
-      }
-    `,
-  },
+    },
+    Mutations: {
+        createConversation: gql`
+            mutation CreateConversation($participantIDs: [String]!) {
+                createConversation(participantIDs: $participantIDs) {
+                    conversationID
+                }
+            }
+        `,
+    },
 };
