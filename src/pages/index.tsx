@@ -9,21 +9,25 @@ const Home: NextPage = () => {
   const reloadSession = () => {
     const event = new Event("visibilitychange");
     document.dispatchEvent(event);
-  }
-  
+  };
+
   return (
     <Box>
-      {session?.user.username ? <Chat session={session} /> : <Auth session={session} reloadSession={reloadSession} />}
+      {session?.user.username ? (
+        <Chat session={session} />
+      ) : (
+        <Auth session={session} reloadSession={reloadSession} />
+      )}
     </Box>
-  )
-}
+  );
+};
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
   return {
     props: {
       session,
-    }
-  }
+    },
+  };
 }
 export default Home;

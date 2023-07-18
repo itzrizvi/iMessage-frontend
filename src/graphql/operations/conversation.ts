@@ -22,23 +22,23 @@ const ConveratonFields = `
         }
         updatedAt
     }
-`
+`;
 
 export default {
-    Queries:{
-        conversations: gql`
+  Queries: {
+    conversations: gql`
             query Conversations {
                 ${ConveratonFields}
             }
-        `
-    },
-    Mutations: {
-        createConversation: gql`
-            mutation CreateConversation($participantIDs: [String]!) {
-                createConversation(participantIDs: $participantIDs) {
-                    conversationID
-                }
-            }
-        `
-    }
-}
+        `,
+  },
+  Mutations: {
+    createConversation: gql`
+      mutation CreateConversation($participantIDs: [String]!) {
+        createConversation(participantIDs: $participantIDs) {
+          conversationID
+        }
+      }
+    `,
+  },
+};
