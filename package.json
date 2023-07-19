@@ -23,6 +23,7 @@
     "eslint-config-next": "13.4.9",
     "framer-motion": "^10.12.20",
     "graphql": "^16.7.1",
+    "graphql-ws": "^5.14.0",
     "next": "13.4.9",
     "next-auth": "^4.22.1",
     "react": "18.2.0",

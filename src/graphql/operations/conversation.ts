@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 const ConveratonFields = `
     id
@@ -23,22 +23,22 @@ const ConveratonFields = `
 `;
 
 export default {
-    Queries: {
-        conversations: gql`
+  Queries: {
+    conversations: gql`
             query Conversations {
                 conversations {
                     ${ConveratonFields}
                 }
             }
         `,
-    },
-    Mutations: {
-        createConversation: gql`
-            mutation CreateConversation($participantIDs: [String]!) {
-                createConversation(participantIDs: $participantIDs) {
-                    conversationID
-                }
-            }
-        `,
-    },
+  },
+  Mutations: {
+    createConversation: gql`
+      mutation CreateConversation($participantIDs: [String]!) {
+        createConversation(participantIDs: $participantIDs) {
+          conversationID
+        }
+      }
+    `,
+  },
 };
