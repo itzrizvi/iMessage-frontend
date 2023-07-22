@@ -4,21 +4,26 @@ import { Session } from "next-auth";
 import ConversationModal from "./Modal/ConversationModal";
 import { ConversationPopulated } from "../../../../../backend/src/utils/types";
 import ConversationItem from "./ConverationItem";
+import { useRouter } from "next/router";
 
 interface ConversationListProps {
   session: Session;
   conversations: Array<ConversationPopulated>;
-  conversationsLoading: Boolean;
+  onViewConversation: (conversationId: string) => void;
 }
 
 const ConversationList: React.FC<ConversationListProps> = ({
   session,
   conversations,
-  conversationsLoading,
+  onViewConversation,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const onOpen = () => setIsOpen(true);
   const onClose = () => setIsOpen(false);
+  const router = useRouter();
+  const {
+    user: { id: userId },
+  } = session;
 
   return (
     <Box width="100%">
@@ -37,21 +42,15 @@ const ConversationList: React.FC<ConversationListProps> = ({
       </Box>
       <ConversationModal isOpen={isOpen} onClose={onClose} session={session} />
 
-      {conversationsLoading ? (
-        <Flex align="center" justify="center" height="50vh">
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="blue.500"
-            size="xl"
-          />
-        </Flex>
-      ) : (
-        conversations.map((conversation) => (
-          <ConversationItem key={conversation.id} conversation={conversation} />
-        ))
-      )}
+      {conversations.map((conversation) => (
+        <ConversationItem
+          key={conversation.id}
+          userId={userId}
+          conversation={conversation}
+          onClick={() => onViewConversation(conversation.id)}
+          isSelected={conversation.id === router.query.conversationID}
+        />
+      ))}
     </Box>
   );
 };

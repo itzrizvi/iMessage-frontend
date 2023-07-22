@@ -3,7 +3,10 @@ import { Session } from "next-auth";
 import ConversationList from "./ConversationList";
 import { useQuery } from "@apollo/client";
 import ConversationOperations from "../../../graphql/operations/conversation";
-import { ConverationData } from "@/utils/types";
+import { ConversationsData } from "@/utils/types";
+import { ConversationPopulated } from "../../../../../backend/src/utils/types";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 interface ConversationsWrapperProps {
   session: Session;
@@ -16,16 +19,58 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
     data: conversationsData,
     error: conversationsError,
     loading: conversationsLoading,
-  } = useQuery<ConverationData, any>(
+    subscribeToMore,
+  } = useQuery<ConversationsData, any>(
     ConversationOperations.Queries.conversations,
   );
-  console.log("CONVRSTN DATA", conversationsData);
+
+  const router = useRouter();
+  const {
+    query: { conversationID },
+  } = router;
+
+  const onViewConversation = async (conversationID: string) => {
+    router.push({ query: { conversationID } });
+  };
+
+  const subscribeToNewConversation = () => {
+    subscribeToMore({
+      document: ConversationOperations.Subscriptions.conversationCreated,
+      updateQuery: (
+        prev,
+        {
+          subscriptionData,
+        }: {
+          subscriptionData: {
+            data: { conversationCreated: ConversationPopulated };
+          };
+        },
+      ) => {
+        if (!subscriptionData.data) return prev;
+        const newConversation = subscriptionData.data.conversationCreated;
+        return Object.assign({}, prev, {
+          conversations: [newConversation, ...prev.conversations],
+        });
+      },
+    });
+  };
+  //
+  useEffect(() => {
+    subscribeToNewConversation();
+  }, []);
+
   return (
-    <Box width={{ base: "100%", md: "400px" }} bg="whiteAlpha.50" py={6} px={3}>
+    <Box
+      display={{ base: conversationID ? "none" : "flex", md: "flex" }}
+      width={{ base: "100%", md: "400px" }}
+      bg="whiteAlpha.50"
+      py={6}
+      px={3}
+    >
       <ConversationList
         session={session}
         conversations={conversationsData?.conversations || []}
-        conversationsLoading={conversationsLoading}
+        onViewConversation={onViewConversation}
       />
     </Box>
   );

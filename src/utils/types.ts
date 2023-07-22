@@ -28,7 +28,7 @@ export interface SearchedUser {
 
 // CONVERSATION TYPES
 
-export interface ConverationData {
+export interface ConversationsData {
   conversations: Array<ConversationPopulated>;
 }
 
