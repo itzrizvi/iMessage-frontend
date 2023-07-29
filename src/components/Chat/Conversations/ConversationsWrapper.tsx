@@ -46,9 +46,17 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
       ) => {
         if (!subscriptionData.data) return prev;
         const newConversation = subscriptionData.data.conversationCreated;
-        return Object.assign({}, prev, {
-          conversations: [newConversation, ...prev.conversations],
-        });
+
+        // Check if the new conversation already exists in the list
+        const isConversationExists = prev.conversations.some(
+          (conversation) => conversation.id === newConversation.id,
+        );
+        if (!isConversationExists) {
+          return Object.assign({}, prev, {
+            conversations: [newConversation, ...prev.conversations],
+          });
+        }
+        return prev;
       },
     });
   };
