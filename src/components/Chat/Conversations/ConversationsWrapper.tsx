@@ -20,9 +20,7 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
     error: conversationsError,
     loading: conversationsLoading,
     subscribeToMore,
-  } = useQuery<ConversationsData, any>(
-    ConversationOperations.Queries.conversations,
-  );
+  } = useQuery<ConversationsData>(ConversationOperations.Queries.conversations);
 
   const router = useRouter();
   const {
@@ -58,6 +56,8 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
   useEffect(() => {
     subscribeToNewConversation();
   }, []);
+
+  console.log("QUERY DATA", conversationsData?.conversations);
 
   return (
     <Box
