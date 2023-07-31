@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { Session } from "next-auth";
 import ConversationModal from "./Modal/ConversationModal";
 import { ConversationPopulated } from "../../../../../backend/src/utils/types";
