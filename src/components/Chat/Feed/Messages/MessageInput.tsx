@@ -8,7 +8,10 @@ interface MessageInputProps {
   conversationId: string;
 }
 
-const MessageInput = ({ session, conversationId }: MessageInputProps) => {
+const MessageInput: React.FC<MessageInputProps> = ({
+  session,
+  conversationId,
+}: MessageInputProps) => {
   const [messageBody, setMessageBody] = useState("");
 
   const onSendMessage = async (e: React.FormEvent) => {

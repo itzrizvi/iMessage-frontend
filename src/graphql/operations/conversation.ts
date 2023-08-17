@@ -1,5 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { gql } from "@apollo/client";
+import { MessageFields } from "./message";
 
 const ConveratonFields = `
     id
@@ -11,13 +12,7 @@ const ConveratonFields = `
         hasSeenLatestMessage
     }
     latestMessage {
-        id
-        sender {
-            id
-            username
-        }
-        body
-        createdAt
+        ${MessageFields}
     }
     updatedAt
 `;
