@@ -40,6 +40,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
           ...newMessage,
         },
       });
+      setMessageBody("");
       if (!data?.sendMessage || errors)
         throw new Error("Failed to send message");
     } catch (error: any) {
