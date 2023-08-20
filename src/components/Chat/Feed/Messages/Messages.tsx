@@ -9,6 +9,7 @@ import { Flex, Stack } from "@chakra-ui/react";
 import MessageOperations from "../../../../graphql/operations/message";
 import { toast } from "react-hot-toast";
 import SkeletonLoader from "@/components/common/SkeletonLoader";
+import MessageItem from "./MessageItem";
 
 interface MessagesProps {
   conversationId: string;
@@ -62,7 +63,11 @@ const Messages: React.FC<MessagesProps> = ({ userId, conversationId }) => {
       {data?.messages && (
         <Flex direction="column-reverse" overflowY="scroll" height="100%">
           {data.messages.map((message) => (
-            <div key={message.id}>{message.body}</div>
+            <MessageItem
+              message={message}
+              key={message.id}
+              sentByMe={message.sender.id === userId}
+            />
           ))}
         </Flex>
       )}
