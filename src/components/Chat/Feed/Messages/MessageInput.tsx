@@ -6,6 +6,7 @@ import MessageOperations from "../../../../graphql/operations/message";
 import { useMutation } from "@apollo/client";
 import { ObjectId } from "bson";
 import { SendMessageArguments } from "../../../../../../backend/src/utils/types";
+import { MessagesData } from "@/utils/types";
 
 interface MessageInputProps {
   session: Session;
@@ -35,12 +36,47 @@ const MessageInput: React.FC<MessageInputProps> = ({
         conversationId,
         body: messageBody,
       };
+      // Clear state
+      setMessageBody("");
+
       const { data, errors } = await sendMessage({
         variables: {
           ...newMessage,
         },
+        optimisticResponse: {
+          sendMessage: true,
+        },
+        update: (cache) => {
+          const existing = cache.readQuery<MessagesData>({
+            query: MessageOperations.Query.messages,
+            variables: { conversationId },
+          }) as MessagesData;
+
+          cache.writeQuery<MessagesData, { conversationId: string }>({
+            query: MessageOperations.Query.messages,
+            variables: { conversationId },
+            data: {
+              ...existing,
+              messages: [
+                {
+                  id: messageId,
+                  body: messageBody,
+                  senderId: session.user.id,
+                  conversationId,
+                  sender: {
+                    id: session.user.id,
+                    username: session.user.username,
+                  },
+                  createdAt: new Date(Date.now()),
+                  updatedAt: new Date(Date.now()),
+                },
+                ...existing.messages,
+              ],
+            },
+          });
+        },
       });
-      setMessageBody("");
+
       if (!data?.sendMessage || errors)
         throw new Error("Failed to send message");
     } catch (error: any) {
