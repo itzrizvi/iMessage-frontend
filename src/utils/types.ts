@@ -60,3 +60,8 @@ export interface MessageSubscriptionData {
     };
   };
 }
+
+export interface Participant {
+  hasSeenLatestMessage: boolean;
+  user: SearchedUser;
+}

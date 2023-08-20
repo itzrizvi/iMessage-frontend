@@ -5,11 +5,15 @@ import ConversationModal from "./Modal/ConversationModal";
 import { ConversationPopulated } from "../../../../../backend/src/utils/types";
 import ConversationItem from "./ConverationItem";
 import { useRouter } from "next/router";
+import { Participant } from "@/utils/types";
 
 interface ConversationListProps {
   session: Session;
   conversations: Array<ConversationPopulated>;
-  onViewConversation: (conversationId: string) => void;
+  onViewConversation: (
+    conversationId: string,
+    hasSeenLatestMessage: boolean | undefined,
+  ) => void;
 }
 
 const ConversationList: React.FC<ConversationListProps> = ({
@@ -42,15 +46,27 @@ const ConversationList: React.FC<ConversationListProps> = ({
       </Box>
       <ConversationModal isOpen={isOpen} onClose={onClose} session={session} />
 
-      {conversations.map((conversation) => (
-        <ConversationItem
-          key={conversation.id}
-          userId={userId}
-          conversation={conversation}
-          onClick={() => onViewConversation(conversation.id)}
-          isSelected={conversation.id === router.query.conversationID}
-        />
-      ))}
+      {conversations.map((conversation) => {
+        console.log(conversation);
+        const participant = conversation.participants.find(
+          (p: Participant) => p.user.id === userId,
+        );
+        return (
+          <ConversationItem
+            key={conversation.id}
+            userId={userId}
+            conversation={conversation}
+            onClick={() =>
+              onViewConversation(
+                conversation.id,
+                participant?.hasSeenLatestMessage,
+              )
+            }
+            hasSeenLatestMessage={participant?.hasSeenLatestMessage}
+            isSelected={conversation.id === router.query.conversationID}
+          />
+        );
+      })}
     </Box>
   );
 };
