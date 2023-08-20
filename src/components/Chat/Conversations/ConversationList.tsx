@@ -47,7 +47,6 @@ const ConversationList: React.FC<ConversationListProps> = ({
       <ConversationModal isOpen={isOpen} onClose={onClose} session={session} />
 
       {conversations.map((conversation) => {
-        console.log(conversation);
         const participant = conversation.participants.find(
           (p: Participant) => p.user.id === userId,
         );

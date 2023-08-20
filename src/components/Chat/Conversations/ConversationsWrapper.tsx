@@ -1,10 +1,13 @@
 import { Box } from "@chakra-ui/react";
 import { Session } from "next-auth";
 import ConversationList from "./ConversationList";
-import { useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import ConversationOperations from "../../../graphql/operations/conversation";
 import { ConversationsData } from "@/utils/types";
-import { ConversationPopulated } from "../../../../../backend/src/utils/types";
+import {
+  ConversationPopulated,
+  ParticipantPopulated,
+} from "../../../../../backend/src/utils/types";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import SkeletonLoader from "@/components/common/SkeletonLoader";
@@ -16,17 +19,26 @@ interface ConversationsWrapperProps {
 const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
   session,
 }) => {
+  const router = useRouter();
+  const {
+    query: { conversationID },
+  } = router;
+
+  const {
+    user: { id: userId },
+  } = session;
+
+  const [markConversationAsRead] = useMutation<
+    { markConversationAsRead: boolean },
+    { userId: string; conversationId: string }
+  >(ConversationOperations.Mutations.markConversationAsRead);
+
   const {
     data: conversationsData,
     error: conversationsError,
     loading: conversationsLoading,
     subscribeToMore,
   } = useQuery<ConversationsData>(ConversationOperations.Queries.conversations);
-
-  const router = useRouter();
-  const {
-    query: { conversationID },
-  } = router;
 
   const onViewConversation = async (
     conversationID: string,
@@ -35,6 +47,64 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
     router.push({ query: { conversationID } });
 
     if (hasSeenLatestMessage) return;
+
+    try {
+      await markConversationAsRead({
+        variables: {
+          userId,
+          conversationId: conversationID,
+        },
+        optimisticResponse: {
+          markConversationAsRead: true,
+        },
+        update: (cache) => {
+          const participantsFragment = cache.readFragment<{
+            participants: Array<ParticipantPopulated>;
+          }>({
+            id: `Conversation:${conversationID}`,
+            fragment: gql`
+              fragment Participants on Conversation {
+                participants {
+                  user {
+                    id
+                    username
+                  }
+                  hasSeenLatestMessage
+                }
+              }
+            `,
+          });
+          if (!participantsFragment) return;
+          const participants = [...participantsFragment.participants];
+          const userParticipantIndx = participants.findIndex(
+            (p) => p.user.id === userId,
+          );
+          if (userParticipantIndx === -1) return;
+          const userParticipant = participants[userParticipantIndx];
+
+          // Update Participant to show latest message as read
+          participants[userParticipantIndx] = {
+            ...userParticipant,
+            hasSeenLatestMessage: true,
+          };
+
+          // Update Apollo Cache
+          cache.writeFragment({
+            id: `Conversation:${conversationID}`,
+            fragment: gql`
+              fragment UpdatedParticipant on Conversation {
+                participants
+              }
+            `,
+            data: {
+              participants,
+            },
+          });
+        },
+      });
+    } catch (error) {
+      console.log("ON VIEW ERROR", error);
+    }
   };
 
   const subscribeToNewConversation = () => {
@@ -70,8 +140,6 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
   useEffect(() => {
     subscribeToNewConversation();
   }, []);
-
-  console.log("QUERY DATA", conversationsData?.conversations);
 
   return (
     <Box
