@@ -29,10 +29,6 @@ const Messages: React.FC<MessagesProps> = ({ userId, conversationId }) => {
     },
   });
 
-  if (error) {
-    return null;
-  }
-
   useEffect(() => {
     let unsubscribe = subscribeToMore({
       document: MessageOperations.Subscription.messageSent,
@@ -54,7 +50,9 @@ const Messages: React.FC<MessagesProps> = ({ userId, conversationId }) => {
     return () => unsubscribe();
   }, [conversationId]);
 
-  console.log("HERE IS MESSAGES", data);
+  if (error) {
+    return null;
+  }
 
   return (
     <Flex direction="column" justify="flex-end" overflow="hidden">
