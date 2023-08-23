@@ -2,7 +2,7 @@
 import { gql } from "@apollo/client";
 import { MessageFields } from "./message";
 
-const ConveratonFields = `
+const ConversationFields = `
     id
     participants {
         user {
@@ -22,7 +22,7 @@ export default {
     conversations: gql`
             query Conversations {
                 conversations {
-                    ${ConveratonFields}
+                    ${ConversationFields}
                 }
             }
         `,
@@ -48,14 +48,16 @@ export default {
     conversationCreated: gql`
         subscription ConversationCreated {
             conversationCreated{
-                ${ConveratonFields}
+                ${ConversationFields}
             }
         }
         `,
     conversationUpdated: gql`
         subscription ConversationUpdated {
-            conversationUpdated{
-                ${ConveratonFields}
+            conversationUpdated {
+               conversation {
+                    ${ConversationFields}
+               }
             }
         }
         `,

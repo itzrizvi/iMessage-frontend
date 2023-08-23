@@ -44,6 +44,12 @@ export interface CreateConversation {
   participantIDs: Array<string>;
 }
 
+export interface ConversationUpdatedData {
+  conversationUpdated: {
+    conversation: ConversationPopulated;
+  };
+}
+
 // Messages
 export interface MessagesData {
   messages: Array<MessagePopulated>;
