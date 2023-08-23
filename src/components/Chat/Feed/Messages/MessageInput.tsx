@@ -1,7 +1,14 @@
-import { Box, Input } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Input,
+  InputGroup,
+  InputRightElement,
+} from "@chakra-ui/react";
 import { Session } from "next-auth";
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";
+import { AiOutlineSend } from "react-icons/ai";
 import MessageOperations from "../../../../graphql/operations/message";
 import { useMutation } from "@apollo/client";
 import { ObjectId } from "bson";
@@ -25,10 +32,12 @@ const MessageInput: React.FC<MessageInputProps> = ({
 
   const onSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
       const {
         user: { id: senderId },
       } = session;
+
       const messageId = new ObjectId().toString();
       const newMessage: SendMessageArguments = {
         id: messageId,
@@ -88,21 +97,41 @@ const MessageInput: React.FC<MessageInputProps> = ({
   return (
     <Box px={4} py={6} width="100%">
       <form onSubmit={onSendMessage}>
-        <Input
-          value={messageBody}
-          onChange={(e) => setMessageBody(e.target.value)}
-          size="md"
-          placeholder="Type new message"
-          resize="none"
-          _focus={{
-            boxShadow: "none",
-            border: "1px solid",
-            borderColor: "whiteAlpha.300",
-          }}
-          _hover={{
-            borderColor: "whiteAlpha.700",
-          }}
-        />
+        <InputGroup size="md">
+          <Input
+            value={messageBody}
+            onChange={(e) => setMessageBody(e.target.value)}
+            size="md"
+            placeholder="Type new message"
+            resize="none"
+            _focus={{
+              boxShadow: "none",
+              border: "1px solid",
+              borderColor: "whiteAlpha.300",
+            }}
+            _hover={{
+              borderColor: "whiteAlpha.700",
+            }}
+          />
+          <InputRightElement
+            backgroundColor="brand.100"
+            width="5rem"
+            borderEndRadius={3}
+          >
+            <Button
+              h="1.75rem"
+              size="lg"
+              type="submit"
+              backgroundColor="brand.100"
+              _focus={{
+                boxShadow: "none",
+              }}
+              isDisabled={messageBody.length <= 0}
+            >
+              <AiOutlineSend size={20} />
+            </Button>
+          </InputRightElement>
+        </InputGroup>
       </form>
     </Box>
   );
