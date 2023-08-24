@@ -53,6 +53,7 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
 
   const handleClick = (event: React.MouseEvent) => {
     event.preventDefault();
+    event.stopPropagation();
     setMenuOpen(true);
   };
 
