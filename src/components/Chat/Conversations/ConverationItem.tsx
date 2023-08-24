@@ -14,7 +14,7 @@ import React, { useState } from "react";
 import { GoDotFill } from "react-icons/go";
 import { MdDeleteOutline } from "react-icons/md";
 import { BiLogOut } from "react-icons/bi";
-import { AiOutlineEdit } from "react-icons/ai";
+import { RxDotsVertical } from "react-icons/rx";
 import { formatUsernames } from "../../../utils/functions";
 import { ConversationPopulated } from "../../../../../backend/src/utils/types";
 
@@ -52,12 +52,8 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleClick = (event: React.MouseEvent) => {
-    if (event.type === "click") {
-      onClick();
-    } else if (event.type === "contextmenu") {
-      event.preventDefault();
-      setMenuOpen(true);
-    }
+    event.preventDefault();
+    setMenuOpen(true);
   };
 
   return (
@@ -70,57 +66,27 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
       borderRadius={4}
       bg={isSelected ? "whiteAlpha.200" : "none"}
       _hover={{ bg: "whiteAlpha.200" }}
-      onClick={handleClick}
-      onContextMenu={handleClick}
+      onClick={onClick}
       position="relative"
     >
-      <Menu isOpen={menuOpen} onClose={() => setMenuOpen(false)}>
-        <MenuList bg="#2d2d2d">
-          <MenuItem
-            icon={<AiOutlineEdit fontSize={20} />}
-            onClick={(event) => {
-              event.stopPropagation();
-              //   onEditConversation();
-            }}
-            bg="#2d2d2d"
-            _hover={{ bg: "whiteAlpha.300" }}
-          >
-            Edit
-          </MenuItem>
-          <MenuItem
-            icon={<MdDeleteOutline fontSize={20} />}
-            onClick={(event) => {
-              event.stopPropagation();
-              //   onDeleteConversation(conversation.id);
-            }}
-            bg="#2d2d2d"
-            _hover={{ bg: "whiteAlpha.300" }}
-          >
-            Delete
-          </MenuItem>
-          {/* {conversation.participants.length > 2 ? (
-              <MenuItem
-                icon={<BiLogOut fontSize={20} />}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  // onLeaveConversation(conversation);
-                }}
-              >
-                Leave
-              </MenuItem>
-            ) : (
-              <MenuItem
-                icon={<MdDeleteOutline fontSize={20} />}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  // onDeleteConversation(conversation.id);
-                }}
-              >
-                Delete
-              </MenuItem>
-            )} */}
-        </MenuList>
-      </Menu>
+      <Box position="absolute" right="250px" top="0px" margin="auto">
+        <Menu isOpen={menuOpen} onClose={() => setMenuOpen(false)}>
+          <MenuList bg="#2d2d2d">
+            <MenuItem
+              icon={<MdDeleteOutline fontSize={20} />}
+              onClick={(event) => {
+                event.stopPropagation();
+                //   onDeleteConversation(conversation.id);
+              }}
+              bg="#2d2d2d"
+              _hover={{ bg: "whiteAlpha.300" }}
+            >
+              Delete
+            </MenuItem>
+          </MenuList>
+        </Menu>
+      </Box>
+
       <Flex position="absolute" left="-6px">
         {hasSeenLatestMessage === false && (
           <GoDotFill fontSize={18} color="#6B46C1" />
@@ -144,6 +110,7 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
                 whiteSpace="nowrap"
                 overflow="hidden"
                 textOverflow="ellipsis"
+                width="90%"
               >
                 {conversation.latestMessage.body}
               </Text>
@@ -166,6 +133,18 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
             },
           })}
         </Text>
+        <Box
+          alignSelf="flex-end"
+          style={{
+            padding: "5px",
+            borderRadius: "50%",
+            backgroundColor: "#292929",
+            marginTop: "25px",
+          }}
+          onClick={handleClick}
+        >
+          <RxDotsVertical />
+        </Box>
       </Flex>
     </Stack>
   );
