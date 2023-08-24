@@ -15,6 +15,7 @@ import SkeletonLoader from "@/components/common/SkeletonLoader";
 interface ConversationsWrapperProps {
   session: Session;
 }
+type ConversationIDType = string;
 
 const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
   session,
@@ -23,6 +24,9 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
   const {
     query: { conversationID },
   } = router;
+
+  const conversationIdTyped: ConversationIDType =
+    conversationID as ConversationIDType;
 
   const {
     user: { id: userId },
@@ -40,6 +44,16 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
         const { data: subscriptionData } = data;
         console.log("SUB DATA", subscriptionData);
         if (!subscriptionData) return;
+
+        const {
+          conversationUpdated: { conversation: updatedConversation },
+        } = subscriptionData;
+
+        const currentlyViewingConversation =
+          updatedConversation.id === conversationID;
+        if (currentlyViewingConversation) {
+          onViewConversation(conversationIdTyped, false);
+        }
       },
     },
   );
