@@ -42,7 +42,6 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
     {
       onData: ({ client, data }) => {
         const { data: subscriptionData } = data;
-        console.log("SUB DATA", subscriptionData);
         if (!subscriptionData) return;
 
         const {
