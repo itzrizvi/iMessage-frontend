@@ -6,6 +6,9 @@ import { ConversationPopulated } from "../../../../../backend/src/utils/types";
 import ConversationItem from "./ConverationItem";
 import { useRouter } from "next/router";
 import { Participant } from "@/utils/types";
+import { toast } from "react-hot-toast";
+import { useMutation } from "@apollo/client";
+import ConversationOperations from "../../../graphql/operations/conversation";
 
 interface ConversationListProps {
   session: Session;
@@ -22,12 +25,21 @@ const ConversationList: React.FC<ConversationListProps> = ({
   onViewConversation,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  //   const [] = useMutation();
   const onOpen = () => setIsOpen(true);
   const onClose = () => setIsOpen(false);
   const router = useRouter();
   const {
     user: { id: userId },
   } = session;
+
+  const onDeleteConversation = async (conversationId: string) => {
+    try {
+    } catch (error) {
+      console.log("ON DELETE ERROR", error);
+      toast.error("Something Went Wrong!!!");
+    }
+  };
 
   const sortedConversations = [...conversations].sort(
     (a, b) => b.updatedAt.valueOf() - a.updatedAt.valueOf(),
