@@ -25,7 +25,11 @@ const ConversationList: React.FC<ConversationListProps> = ({
   onViewConversation,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  //   const [] = useMutation();
+  const [deleteConversation] = useMutation<{
+    deleteConversation: boolean;
+    conversationId: string;
+  }>(ConversationOperations.Mutations.deleteConversation);
+
   const onOpen = () => setIsOpen(true);
   const onClose = () => setIsOpen(false);
   const router = useRouter();
@@ -35,9 +39,27 @@ const ConversationList: React.FC<ConversationListProps> = ({
 
   const onDeleteConversation = async (conversationId: string) => {
     try {
+      toast.promise(
+        deleteConversation({
+          variables: {
+            conversationId,
+          },
+          update: () => {
+            router.replace(
+              typeof process.env.NEXT_PUBLIC_BASE_URL === "string"
+                ? process.env.NEXT_PUBLIC_BASE_URL
+                : "",
+            );
+          },
+        }),
+        {
+          loading: "Deleting Conversations!!!",
+          success: "Conversartion Deleted!!!",
+          error: "Something Went Wrong!!!",
+        },
+      );
     } catch (error) {
       console.log("ON DELETE ERROR", error);
-      toast.error("Something Went Wrong!!!");
     }
   };
 
@@ -77,6 +99,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
                 participant?.hasSeenLatestMessage,
               )
             }
+            onDeleteConversation={onDeleteConversation}
             hasSeenLatestMessage={participant?.hasSeenLatestMessage}
             isSelected={conversation.id === router.query.conversationID}
           />
