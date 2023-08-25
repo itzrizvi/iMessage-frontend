@@ -168,7 +168,7 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
   return (
     <Box
       display={{ base: conversationID ? "none" : "flex", md: "flex" }}
-      width={{ base: "100%", md: "400px" }}
+      width={{ base: "100%", md: "400px", sm: "100%" }}
       flexDirection="column"
       bg="whiteAlpha.50"
       gap={4}

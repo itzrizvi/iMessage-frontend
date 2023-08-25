@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Button, Text } from "@chakra-ui/react";
 import { Session } from "next-auth";
 import ConversationModal from "./Modal/ConversationModal";
 import { ConversationPopulated } from "../../../../../backend/src/utils/types";
@@ -9,6 +9,8 @@ import { Participant } from "@/utils/types";
 import { toast } from "react-hot-toast";
 import { useMutation } from "@apollo/client";
 import ConversationOperations from "../../../graphql/operations/conversation";
+import { BiLogOut } from "react-icons/bi";
+import { signOut } from "next-auth/react";
 
 interface ConversationListProps {
   session: Session;
@@ -68,11 +70,17 @@ const ConversationList: React.FC<ConversationListProps> = ({
   );
 
   return (
-    <Box width="100%">
+    <Box
+      width={{ base: "100%", md: "370px", sm: "100%" }}
+      position="relative"
+      height="100%"
+      overflow="hidden"
+    >
       <Box
         py={2}
         px={4}
         mb={4}
+        width="100%"
         bg="blackAlpha.300"
         borderRadius={4}
         cursor="pointer"
@@ -105,6 +113,11 @@ const ConversationList: React.FC<ConversationListProps> = ({
           />
         );
       })}
+      <Box position="absolute" bottom={0} left={0} width="100%" px={8}>
+        <Button leftIcon={<BiLogOut />} width="100%" onClick={() => signOut()}>
+          Logout
+        </Button>
+      </Box>
     </Box>
   );
 };
