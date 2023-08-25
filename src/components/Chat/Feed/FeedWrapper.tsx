@@ -52,7 +52,7 @@ const FeedWrapper: React.FC<FeedWrapperProps> = ({ session }) => {
                 color="#3d84f7"
               />
               <Text fontSize="2xl" fontWeight={500}>
-                One step away from start your community!!!
+                One step away from starting your community!!!
               </Text>
               <Text fontSize="18px" mt={2}>
                 Select or create a conversation.
