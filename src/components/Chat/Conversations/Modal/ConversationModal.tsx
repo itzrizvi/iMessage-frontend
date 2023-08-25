@@ -102,8 +102,6 @@ const ConversationModal: React.FC<ConversationModalProps> = ({
       setParticipants([]);
       setUsername("");
       onClose();
-
-      console.log("HERE IS DATA", data);
     } catch (error: any) {
       console.error(error);
       toast.error(error?.message);

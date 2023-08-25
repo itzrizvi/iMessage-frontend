@@ -66,5 +66,12 @@ export default {
             }
         }
         `,
+    conversationDeleted: gql`
+      subscription ConversationDeleted {
+        conversationDeleted {
+          id
+        }
+      }
+    `,
   },
 };

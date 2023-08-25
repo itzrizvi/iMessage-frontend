@@ -3,7 +3,11 @@ import { Session } from "next-auth";
 import ConversationList from "./ConversationList";
 import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
 import ConversationOperations from "../../../graphql/operations/conversation";
-import { ConversationUpdatedData, ConversationsData } from "@/utils/types";
+import {
+  ConversationDeletedData,
+  ConversationUpdatedData,
+  ConversationsData,
+} from "@/utils/types";
 import {
   ConversationPopulated,
   ParticipantPopulated,
@@ -53,6 +57,39 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
         if (currentlyViewingConversation) {
           onViewConversation(conversationIdTyped, false);
         }
+      },
+    },
+  );
+
+  useSubscription<ConversationDeletedData>(
+    ConversationOperations.Subscriptions.conversationDeleted,
+    {
+      onData: ({ client, data }) => {
+        const { data: subscriptionData } = data;
+
+        if (!subscriptionData) return;
+
+        const existing = client.readQuery<ConversationsData>({
+          query: ConversationOperations.Queries.conversations,
+        });
+
+        if (!existing) return;
+
+        const { conversations } = existing;
+
+        const {
+          conversationDeleted: { id: deletedConversationId },
+        } = subscriptionData;
+
+        client.writeQuery<ConversationsData>({
+          query: ConversationOperations.Queries.conversations,
+          data: {
+            conversations: conversations.filter(
+              (conversation) => conversation.id !== deletedConversationId,
+            ),
+          },
+        });
+        router.push("/");
       },
     },
   );

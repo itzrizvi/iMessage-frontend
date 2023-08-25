@@ -114,7 +114,18 @@ const ConversationList: React.FC<ConversationListProps> = ({
         );
       })}
       <Box position="absolute" bottom={0} left={0} width="100%" px={8}>
-        <Button leftIcon={<BiLogOut />} width="100%" onClick={() => signOut()}>
+        <Button
+          leftIcon={<BiLogOut />}
+          width="100%"
+          onClick={() =>
+            signOut({
+              callbackUrl:
+                typeof process.env.NEXT_PUBLIC_BASE_URL === "string"
+                  ? process.env.NEXT_PUBLIC_BASE_URL
+                  : "/",
+            })
+          }
+        >
           Logout
         </Button>
       </Box>
