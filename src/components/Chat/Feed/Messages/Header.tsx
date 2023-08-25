@@ -46,10 +46,24 @@ const MessagesHeader: React.FC<MessagesHeaderProps> = ({
       {!conversation && !loading && <Text>Conversation Not Found</Text>}
       {conversation && (
         <Stack direction="row" p={3}>
-          <Text color="whiteAlpha.600">To: </Text>
-          <Text fontWeight={600}>
-            {formatUsernames(conversation.participants, userId)}
+          <Text color="whiteAlpha.600" fontSize="lg" alignSelf="center">
+            To:{" "}
           </Text>
+          {[
+            ...formatUsernames(conversation.participants, userId).split(" "),
+          ].map((el, index) => (
+            <Text
+              fontWeight={600}
+              bg="brand.100"
+              px={4}
+              py={1}
+              borderRadius={4}
+              m={1}
+              key={index}
+            >
+              {el}
+            </Text>
+          ))}
         </Stack>
       )}
     </Stack>
