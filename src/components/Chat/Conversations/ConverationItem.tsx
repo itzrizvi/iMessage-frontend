@@ -13,11 +13,10 @@ import enUS from "date-fns/locale/en-US";
 import React, { useState } from "react";
 import { GoDotFill } from "react-icons/go";
 import { MdDeleteOutline } from "react-icons/md";
-import { BiLogOut } from "react-icons/bi";
 import { RxDotsVertical } from "react-icons/rx";
 import { formatUsernames } from "../../../utils/functions";
-import { ConversationPopulated } from "../../../../../backend/src/utils/types";
 import { Session } from "next-auth";
+import { ConversationPopulated } from "@/utils/types";
 
 const formatRelativeLocale = {
   lastWeek: "eeee",

@@ -2,10 +2,9 @@ import { useState } from "react";
 import { Box, Button, Text } from "@chakra-ui/react";
 import { Session } from "next-auth";
 import ConversationModal from "./Modal/ConversationModal";
-import { ConversationPopulated } from "../../../../../backend/src/utils/types";
 import ConversationItem from "./ConverationItem";
 import { useRouter } from "next/router";
-import { Participant } from "@/utils/types";
+import { Participant, ConversationPopulated } from "@/utils/types";
 import { toast } from "react-hot-toast";
 import { useMutation } from "@apollo/client";
 import ConversationOperations from "../../../graphql/operations/conversation";
@@ -118,7 +117,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
 
       {sortedConversations.map((conversation) => {
         const participant = conversation.participants.find(
-          (p: Participant) => p.user.id === userId,
+          (p: any) => p.user.id === userId,
         );
         return (
           <ConversationItem

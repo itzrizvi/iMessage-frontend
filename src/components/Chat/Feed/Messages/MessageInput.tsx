@@ -12,8 +12,7 @@ import { AiOutlineSend } from "react-icons/ai";
 import MessageOperations from "../../../../graphql/operations/message";
 import { useMutation } from "@apollo/client";
 import { ObjectId } from "bson";
-import { SendMessageArguments } from "../../../../../../backend/src/utils/types";
-import { MessagesData } from "@/utils/types";
+import { MessagesData, SendMessageArguments } from "@/utils/types";
 
 interface MessageInputProps {
   session: Session;
