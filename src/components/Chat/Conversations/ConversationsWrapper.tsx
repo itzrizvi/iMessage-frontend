@@ -87,7 +87,6 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
         if (!existing) return;
 
         const { conversations } = existing;
-
         const {
           conversationDeleted: { id: deletedConversationId },
         } = subscriptionData;
