@@ -5,7 +5,7 @@ import { createClient } from "graphql-ws";
 import { getSession } from "next-auth/react";
 
 const httpLink = new HttpLink({
-  uri: process.env.NEXT_API_URL,
+  uri: "https://imessage-backend-versionone.onrender.com/graphql",
   credentials: "include",
 });
 
