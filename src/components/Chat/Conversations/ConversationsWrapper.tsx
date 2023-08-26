@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { Session } from "next-auth";
 import useSound from "use-sound";
 import ConversationList from "./ConversationList";
@@ -19,6 +19,8 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import SkeletonLoader from "@/components/common/SkeletonLoader";
 import notificationSound from "../../../assets/sounds/notificationSound.mp3";
+import notificationSoundTwo from "../../../assets/sounds/notificationSound.mp3";
+import deleteSound from "../../../assets/sounds/trashNotificationSound.mp3";
 
 interface ConversationsWrapperProps {
   session: Session;
@@ -33,6 +35,9 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
     query: { conversationID },
   } = router;
   const [playNotificationSound] = useSound(notificationSound);
+  //   const [playNotificationSoundTwo] = useSound(deleteSound);
+  const [shouldPlayNotification, setShouldPlayNotification] =
+    useState<boolean>(false);
   const conversationIdTyped: ConversationIDType =
     conversationID as ConversationIDType;
 
@@ -55,12 +60,11 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
         const {
           conversationUpdated: { conversation: updatedConversation },
         } = subscriptionData;
-
         const {
           latestMessage: { sender },
         } = updatedConversation;
         if (sender.id !== userId) {
-          playNotificationSound();
+          setShouldPlayNotification(true);
         }
 
         const currentlyViewingConversation =
@@ -203,6 +207,20 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
             conversations: [newConversation, ...prev.conversations],
           });
         }
+
+        const notificationSoundReceivers = newConversation.participants.filter(
+          (participant: Participant) =>
+            participant.hasSeenLatestMessage === false,
+        );
+
+        if (
+          notificationSoundReceivers.some(
+            (receiver: any) => receiver.user.id === userId,
+          )
+        ) {
+          setShouldPlayNotification(true);
+        }
+
         return prev;
       },
     });
@@ -211,6 +229,13 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
   useEffect(() => {
     subscribeToNewConversation();
   }, []);
+
+  useEffect(() => {
+    if (shouldPlayNotification) {
+      playNotificationSound();
+      setShouldPlayNotification(false);
+    }
+  }, [shouldPlayNotification]);
 
   return (
     <Box

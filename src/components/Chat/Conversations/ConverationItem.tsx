@@ -17,6 +17,7 @@ import { BiLogOut } from "react-icons/bi";
 import { RxDotsVertical } from "react-icons/rx";
 import { formatUsernames } from "../../../utils/functions";
 import { ConversationPopulated } from "../../../../../backend/src/utils/types";
+import { Session } from "next-auth";
 
 const formatRelativeLocale = {
   lastWeek: "eeee",
@@ -27,11 +28,12 @@ const formatRelativeLocale = {
 
 interface ConversationItemProps {
   userId: string;
+  session: Session;
   conversation: ConversationPopulated;
   onClick: () => void;
   isSelected: boolean;
   hasSeenLatestMessage?: boolean | undefined;
-  onDeleteConversation: (conversationId: string) => void;
+  onDeleteConversation: (conversationId: string, selfId: string) => void;
   //   onEditConversation?: () => void;
   //   hasSeenLatestMessage?: boolean;
   //   selectedConversationId?: string;
@@ -41,6 +43,7 @@ interface ConversationItemProps {
 const ConversationItem: React.FC<ConversationItemProps> = ({
   userId,
   conversation,
+  session,
   onClick,
   isSelected,
   hasSeenLatestMessage,
@@ -50,6 +53,9 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
   //   onLeaveConversation,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const {
+    user: { id: selfId },
+  } = session;
 
   const handleClick = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -77,7 +83,7 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
               icon={<MdDeleteOutline fontSize={20} />}
               onClick={(event) => {
                 event.stopPropagation();
-                onDeleteConversation(conversation.id);
+                onDeleteConversation(conversation.id, selfId);
               }}
               bg="#2d2d2d"
               _hover={{ bg: "whiteAlpha.300" }}

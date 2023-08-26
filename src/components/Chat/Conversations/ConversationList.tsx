@@ -11,6 +11,8 @@ import { useMutation } from "@apollo/client";
 import ConversationOperations from "../../../graphql/operations/conversation";
 import { BiLogOut } from "react-icons/bi";
 import { signOut } from "next-auth/react";
+import useSound from "use-sound";
+import deleteSound from "../../../assets/sounds/trashNotificationSound.mp3";
 
 interface ConversationListProps {
   session: Session;
@@ -26,6 +28,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
   conversations,
   onViewConversation,
 }) => {
+  const [playDeleteSound] = useSound(deleteSound);
   const [isOpen, setIsOpen] = useState(false);
   const [deleteConversation] = useMutation<{
     deleteConversation: boolean;
@@ -39,7 +42,11 @@ const ConversationList: React.FC<ConversationListProps> = ({
     user: { id: userId },
   } = session;
 
-  const onDeleteConversation = async (conversationId: string) => {
+  const onDeleteConversation = async (
+    conversationId: string,
+    selfId: string,
+  ) => {
+    console.log();
     try {
       toast.promise(
         deleteConversation({
@@ -52,6 +59,9 @@ const ConversationList: React.FC<ConversationListProps> = ({
                 ? process.env.NEXT_PUBLIC_BASE_URL
                 : "",
             );
+            if (selfId === userId) {
+              playDeleteSound();
+            }
           },
         }),
         {
@@ -114,6 +124,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
           <ConversationItem
             key={conversation.id}
             userId={userId}
+            session={session}
             conversation={conversation}
             onClick={() =>
               onViewConversation(
