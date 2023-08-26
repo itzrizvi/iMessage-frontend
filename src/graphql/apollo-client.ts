@@ -13,7 +13,7 @@ const wsLink =
   typeof window !== "undefined"
     ? new GraphQLWsLink(
         createClient({
-          url: `${process.env.NEXT_API_WS_URL}`,
+          url: "https://imessage-backend-versionone.onrender.com/graphql/subscriptions",
           connectionParams: async () => ({
             session: await getSession(),
           }),
