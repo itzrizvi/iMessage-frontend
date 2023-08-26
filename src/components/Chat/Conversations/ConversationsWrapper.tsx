@@ -1,5 +1,7 @@
+import React, { useState } from "react";
 import { Box } from "@chakra-ui/react";
 import { Session } from "next-auth";
+import useSound from "use-sound";
 import ConversationList from "./ConversationList";
 import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
 import ConversationOperations from "../../../graphql/operations/conversation";
@@ -7,6 +9,7 @@ import {
   ConversationDeletedData,
   ConversationUpdatedData,
   ConversationsData,
+  Participant,
 } from "@/utils/types";
 import {
   ConversationPopulated,
@@ -15,6 +18,7 @@ import {
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import SkeletonLoader from "@/components/common/SkeletonLoader";
+import notificationSound from "../../../assets/sounds/notificationSound.mp3";
 
 interface ConversationsWrapperProps {
   session: Session;
@@ -28,7 +32,7 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
   const {
     query: { conversationID },
   } = router;
-
+  const [playNotificationSound] = useSound(notificationSound);
   const conversationIdTyped: ConversationIDType =
     conversationID as ConversationIDType;
 
@@ -51,6 +55,13 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
         const {
           conversationUpdated: { conversation: updatedConversation },
         } = subscriptionData;
+
+        const {
+          latestMessage: { sender },
+        } = updatedConversation;
+        if (sender.id !== userId) {
+          playNotificationSound();
+        }
 
         const currentlyViewingConversation =
           updatedConversation.id === conversationID;
