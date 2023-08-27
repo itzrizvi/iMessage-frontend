@@ -5,7 +5,7 @@ import { createClient } from "graphql-ws";
 import { getSession } from "next-auth/react";
 
 const httpLink = new HttpLink({
-  uri: "https://imessage-backend-versionone.onrender.com/graphql",
+  uri: "http://localhost:4000/graphql",
   credentials: "include",
 });
 
@@ -13,7 +13,7 @@ const wsLink =
   typeof window !== "undefined"
     ? new GraphQLWsLink(
         createClient({
-          url: "wss://imessage-backend-versionone.onrender.com/graphql/subscriptions",
+          url: "ws://localhost:4000/graphql/subscriptions",
           connectionParams: async () => ({
             session: await getSession(),
           }),
