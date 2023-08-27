@@ -17,38 +17,8 @@ export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async session({ session, token, user }) {
+      console.log(token);
       return { ...session, user: { ...session.user, ...user } };
-    },
-  },
-  cookies: {
-    sessionToken: {
-      name: `__Secure-next-auth.session-token`,
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        secure: true,
-        domain: "imessage-backend-versionone.onrender.com",
-      },
-    },
-    callbackUrl: {
-      name: `__Secure-next-auth.callback-url`,
-      options: {
-        sameSite: "lax",
-        path: "/",
-        secure: true,
-        domain: "imessage-backend-versionone.onrender.com",
-      },
-    },
-    csrfToken: {
-      name: `__Host-next-auth.csrf-token`,
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        secure: true,
-        domain: "imessage-backend-versionone.onrender.com",
-      },
     },
   },
 });
