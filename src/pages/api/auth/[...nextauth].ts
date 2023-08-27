@@ -24,7 +24,7 @@ export default NextAuth({
     sessionToken: {
       name: `__Secure-next-auth.session-token`,
       options: {
-        httpOnly: true,
+        httpOnly: false,
         sameSite: "none",
         path: "/",
         secure: true,
@@ -41,7 +41,7 @@ export default NextAuth({
     csrfToken: {
       name: `__Host-next-auth.csrf-token`,
       options: {
-        httpOnly: true,
+        httpOnly: false,
         sameSite: "none",
         path: "/",
         secure: true,
