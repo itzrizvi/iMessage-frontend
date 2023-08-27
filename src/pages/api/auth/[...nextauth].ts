@@ -28,7 +28,7 @@ export default NextAuth({
         sameSite: "lax",
         path: "/",
         secure: true,
-        domain: "imessage-backend-versionone.onrender.com/graphql",
+        domain: "imessage-backend-versionone.onrender.com",
       },
     },
     callbackUrl: {
@@ -37,7 +37,7 @@ export default NextAuth({
         sameSite: "lax",
         path: "/",
         secure: true,
-        domain: "imessage-backend-versionone.onrender.com/graphql",
+        domain: "imessage-backend-versionone.onrender.com",
       },
     },
     csrfToken: {
@@ -47,7 +47,7 @@ export default NextAuth({
         sameSite: "lax",
         path: "/",
         secure: true,
-        domain: "imessage-backend-versionone.onrender.com/graphql",
+        domain: "imessage-backend-versionone.onrender.com",
       },
     },
   },
