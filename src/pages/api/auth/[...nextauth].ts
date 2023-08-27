@@ -25,26 +25,29 @@ export default NextAuth({
       name: `__Secure-next-auth.session-token`,
       options: {
         httpOnly: true,
-        sameSite: "None",
+        sameSite: "lax",
         path: "/",
         secure: true,
+        domain: "imessage-backend-versionone.onrender.com/graphql",
       },
     },
     callbackUrl: {
       name: `__Secure-next-auth.callback-url`,
       options: {
-        sameSite: "None",
+        sameSite: "lax",
         path: "/",
         secure: true,
+        domain: "imessage-backend-versionone.onrender.com/graphql",
       },
     },
     csrfToken: {
       name: `__Host-next-auth.csrf-token`,
       options: {
         httpOnly: true,
-        sameSite: "None",
+        sameSite: "lax",
         path: "/",
         secure: true,
+        domain: "imessage-backend-versionone.onrender.com/graphql",
       },
     },
   },
