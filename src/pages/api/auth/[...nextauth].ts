@@ -20,4 +20,14 @@ export default NextAuth({
       return { ...session, user: { ...session.user, ...user } };
     },
   },
+  cookies: {
+    sessionToken: {
+      name: "__Secure-next-auth.session-token",
+      options: {
+        sameSite: "none",
+        path: "/",
+        secure: true,
+      },
+    },
+  },
 });
