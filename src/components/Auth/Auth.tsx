@@ -19,7 +19,8 @@ const Auth: React.FC<AuthProps> = ({ session, reloadSession }) => {
     CreateUsernameVariables
   >(UserOperations.Mutations.createUsername);
 
-  const onSubmit = async () => {
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (!username) return;
     try {
       const { data } = await createUsername({
@@ -50,11 +51,14 @@ const Auth: React.FC<AuthProps> = ({ session, reloadSession }) => {
         {session ? (
           <>
             <form onSubmit={onSubmit}>
-              <Text fontSize="3xl">Create a Username</Text>
+              <Text fontSize="3xl" mb={3} align="center">
+                Create a Username
+              </Text>
               <Input
                 placeholder="Entera a username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                mb={3}
               />
               <Button width="100%" type="submit" isLoading={loading}>
                 Save
