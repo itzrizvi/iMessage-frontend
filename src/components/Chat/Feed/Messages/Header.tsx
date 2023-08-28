@@ -5,6 +5,7 @@ import React from "react";
 import ConversationOperations from "../../../../graphql/operations/conversation";
 import { formatUsernames } from "../../../../utils/functions";
 import { ConversationsData } from "../../../../utils/types";
+import { BiArrowBack } from "react-icons/bi";
 interface MessagesHeaderProps {
   userId: string;
   conversationId: string;
@@ -27,11 +28,18 @@ const MessagesHeader: React.FC<MessagesHeaderProps> = ({
     <Stack
       direction="row"
       align="center"
-      spacing={6}
+      spacing={{ base: 2, md: 6, lg: 6, sm: 4 }}
       py={5}
       px={{ base: 4, md: 0 }}
       borderBottom="1px solid"
       borderColor="whiteAlpha.200"
+      justifyContent={{
+        base: "space-between",
+        lg: "initial",
+        md: "initial",
+        sm: "space-between",
+      }}
+      width="100%"
     >
       <Button
         display={{ md: "none" }}
@@ -41,11 +49,10 @@ const MessagesHeader: React.FC<MessagesHeaderProps> = ({
           })
         }
       >
-        Back
+        <BiArrowBack />
       </Button>
-      {!conversation && !loading && <Text>Conversation Not Found</Text>}
-      {conversation && (
-        <Stack direction="row" p={3}>
+      {conversation && !loading && (
+        <Stack direction="row" p={{ base: 2, lg: 3, md: 3, sm: 2 }}>
           <Text color="whiteAlpha.600" fontSize="lg" alignSelf="center">
             To:{" "}
           </Text>
