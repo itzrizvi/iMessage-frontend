@@ -86,7 +86,7 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
         </Menu>
       </Box>
 
-      <Flex position="absolute" left="-6px">
+      <Flex position="absolute" left="-2px">
         {hasSeenLatestMessage === false && (
           <GoDotFill fontSize={18} color="#6B46C1" />
         )}
