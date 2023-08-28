@@ -33,10 +33,6 @@ interface ConversationItemProps {
   isSelected: boolean;
   hasSeenLatestMessage?: boolean | undefined;
   onDeleteConversation: (conversationId: string, selfId: string) => void;
-  //   onEditConversation?: () => void;
-  //   hasSeenLatestMessage?: boolean;
-  //   selectedConversationId?: string;
-  //   onLeaveConversation?: (conversation: ConversationPopulated) => void;
 }
 
 const ConversationItem: React.FC<ConversationItemProps> = ({
@@ -47,9 +43,6 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
   isSelected,
   hasSeenLatestMessage,
   onDeleteConversation,
-  //   selectedConversationId,
-  //   onEditConversation,
-  //   onLeaveConversation,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const {

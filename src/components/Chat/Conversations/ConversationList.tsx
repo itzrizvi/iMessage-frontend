@@ -4,7 +4,7 @@ import { Session } from "next-auth";
 import ConversationModal from "./Modal/ConversationModal";
 import ConversationItem from "./ConverationItem";
 import { useRouter } from "next/router";
-import { Participant, ConversationPopulated } from "@/utils/types";
+import { ConversationPopulated } from "@/utils/types";
 import { toast } from "react-hot-toast";
 import { useMutation } from "@apollo/client";
 import ConversationOperations from "../../../graphql/operations/conversation";

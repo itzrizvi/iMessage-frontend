@@ -49,15 +49,17 @@ const Auth: React.FC<AuthProps> = ({ session, reloadSession }) => {
       <Stack spacing={4} align="center">
         {session ? (
           <>
-            <Text fontSize="3xl">Create a Username</Text>
-            <Input
-              placeholder="Entera a username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <Button width="100%" onClick={onSubmit} isLoading={loading}>
-              Save
-            </Button>
+            <form onSubmit={onSubmit}>
+              <Text fontSize="3xl">Create a Username</Text>
+              <Input
+                placeholder="Entera a username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <Button width="100%" type="submit" isLoading={loading}>
+                Save
+              </Button>
+            </form>
           </>
         ) : (
           <>
