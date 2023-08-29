@@ -52,10 +52,10 @@ const Auth: React.FC<AuthProps> = ({ session, reloadSession }) => {
           <>
             <form onSubmit={onSubmit}>
               <Text fontSize="3xl" mb={3} align="center">
-                Create a Username
+                Create a username
               </Text>
               <Input
-                placeholder="Entera a username"
+                placeholder="Enter a username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 mb={3}
