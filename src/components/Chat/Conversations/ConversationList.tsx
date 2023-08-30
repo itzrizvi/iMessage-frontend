@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Button, Text } from "@chakra-ui/react";
+import { Box, Button, Image, Text } from "@chakra-ui/react";
 import { Session } from "next-auth";
 import ConversationModal from "./Modal/ConversationModal";
 import ConversationItem from "./ConverationItem";
@@ -12,6 +12,8 @@ import { BiLogOut } from "react-icons/bi";
 import { signOut } from "next-auth/react";
 import useSound from "use-sound";
 import deleteSound from "../../../assets/sounds/trashNotificationSound.mp3";
+import { FaUserSecret } from "react-icons/fa";
+import { MdAlternateEmail } from "react-icons/md";
 
 interface ConversationListProps {
   session: Session;
@@ -38,7 +40,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
   const onClose = () => setIsOpen(false);
   const router = useRouter();
   const {
-    user: { id: userId },
+    user: { id: userId, image: profileImage, username, email },
   } = session;
 
   const onDeleteConversation = async (
@@ -85,6 +87,55 @@ const ConversationList: React.FC<ConversationListProps> = ({
       height="100%"
       overflow="hidden"
     >
+      <Box
+        py={4}
+        px={4}
+        mb={4}
+        width="100%"
+        bg="blackAlpha.300"
+        borderRadius={4}
+        cursor="pointer"
+      >
+        <Image
+          src={`${profileImage}`}
+          display="block"
+          margin="auto"
+          alt="Profile Image"
+          alignSelf="center"
+          boxSize="80px"
+          borderRadius="full"
+        />
+        <Box
+          display="flex"
+          alignItems="baseline"
+          gap="10px"
+          justifyContent="center"
+        >
+          <FaUserSecret />
+          <Text mt={4} color="whiteAlpha.800" fontWeight={500}>
+            {username}
+          </Text>
+        </Box>
+
+        <Box
+          display="flex"
+          alignItems="center"
+          gap="5px"
+          justifyContent="center"
+        >
+          <MdAlternateEmail size="15" />
+          <Text
+            textAlign="center"
+            mt={1}
+            fontSize="12px"
+            color="whiteAlpha.800"
+            fontWeight={500}
+            alignSelf="center"
+          >
+            {email}
+          </Text>
+        </Box>
+      </Box>
       <Box
         py={2}
         px={4}
