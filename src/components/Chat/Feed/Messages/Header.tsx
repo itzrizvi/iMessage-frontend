@@ -57,7 +57,7 @@ const MessagesHeader: React.FC<MessagesHeaderProps> = ({
             To:{" "}
           </Text>
           {[
-            ...formatUsernames(conversation.participants, userId).split(" "),
+            ...formatUsernames(conversation.participants, userId).split(","),
           ].map((el, index) => (
             <Text
               fontWeight={600}

@@ -85,20 +85,6 @@ const ConversationList: React.FC<ConversationListProps> = ({
       height="100%"
       overflow="hidden"
     >
-      <Button
-        py={2}
-        px={4}
-        mb={4}
-        width="100%"
-        bg="blackAlpha.300"
-        borderRadius={4}
-        cursor="pointer"
-        onClick={() => {
-          router.push("/");
-        }}
-      >
-        Home
-      </Button>
       <Box
         py={2}
         px={4}
@@ -137,7 +123,15 @@ const ConversationList: React.FC<ConversationListProps> = ({
           />
         );
       })}
-      <Box position="absolute" bottom={0} left={0} width="100%" px={8}>
+      <Box
+        position="absolute"
+        bottom={0}
+        left={0}
+        width="100%"
+        px={8}
+        py={4}
+        bg="blackAlpha.600"
+      >
         <Button
           leftIcon={<BiLogOut />}
           width="100%"
